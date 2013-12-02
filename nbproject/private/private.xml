@@ -15,4 +15,63 @@
             <line>752</line>
         </file>
     </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="5">
+        <file>
+            <url>src/pdfreader/EDGARHTMLCharacterRun.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>1443</line>
+                <key/>
+            </bookmark>
+            <bookmark id="2">
+                <name/>
+                <line>1443</line>
+                <key/>
+            </bookmark>
+            <bookmark id="3">
+                <name/>
+                <line>1443</line>
+                <key/>
+            </bookmark>
+            <bookmark id="4">
+                <name/>
+                <line>1443</line>
+                <key/>
+            </bookmark>
+            <bookmark id="5">
+                <name/>
+                <line>1443</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/pdfreader/ListExtraction.java</url>
+            <bookmark id="0">
+                <name/>
+                <line>861</line>
+                <key/>
+            </bookmark>
+            <bookmark id="0">
+                <name/>
+                <line>881</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/PDF/util/PDFTextStripper.java</url>
+            <bookmark id="0">
+                <name/>
+                <line>752</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/pdfreader/PDFReader.java</url>
+            <bookmark id="0">
+                <name/>
+                <line>484</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
 </project-private>

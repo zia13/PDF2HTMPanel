@@ -18,8 +18,8 @@
  */
 package PDF.pdfviewer;
 
-import PDF.pdmodel.PDPage;
-import PDF.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
+import org.apache.pdfbox.pdfviewer.PageDrawer;
 
 /**
  * This is a simple JPanel that can be used to display a PDF page.

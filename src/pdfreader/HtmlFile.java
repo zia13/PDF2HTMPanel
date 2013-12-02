@@ -2,26 +2,23 @@ package pdfreader;
 
 
 
-import PDF.exceptions.InvalidPasswordException;
-import PDF.pdfparser.PDFStreamParser;
-import PDF.pdfwriter.ContentStreamWriter;
-import PDF.pdmodel.PDDocument;
-import PDF.pdmodel.PDPage;
-import PDF.pdmodel.common.PDRectangle;
-import PDF.pdmodel.common.PDStream;
-import PDF.pdmodel.font.PDFont;
-import PDF.pdmodel.font.PDFontDescriptor;
-import PDF.util.PDFImageWriter;
-import PDF.util.PDFOperator;
-import PDF.util.PDFTextStripper;
-import PDF.util.TextPosition;
+import org.apache.pdfbox.exceptions.InvalidPasswordException;
+import org.apache.pdfbox.pdfparser.PDFStreamParser;
+import org.apache.pdfbox.pdfwriter.ContentStreamWriter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.common.PDStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDFontDescriptor;
+import org.apache.pdfbox.util.PDFImageWriter;
+import org.apache.pdfbox.util.PDFOperator;
+import org.apache.pdfbox.util.PDFTextStripper;
+import org.apache.pdfbox.util.TextPosition;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,19 +84,16 @@ public class HtmlFile extends PDFTextStripper
         }
     	catch (UnsupportedEncodingException e) 
         {
-            e.printStackTrace();
             System.err.println( "Error: Unsupported encoding." );
             System.exit( 1 );		
         }
     	catch (FileNotFoundException e) 
         {
-            e.printStackTrace();
             System.err.println( "Error: File not found." );
             System.exit( 1 );		
         }
     	catch (IOException e) 
         {
-            e.printStackTrace();
             System.err.println( "Error: IO error, could not open html file." );
             System.exit( 1 );	
         }
@@ -118,7 +112,6 @@ public class HtmlFile extends PDFTextStripper
             } 
             catch (IOException e) 
             {
-                e.printStackTrace();            
                 System.err.println( "Error: IO error, could not close html file." );            
                 System.exit( 1 );		
             }
@@ -149,9 +142,9 @@ public class HtmlFile extends PDFTextStripper
             else             
             {	
                 positionLastSlash++;		
-            }	
+            }             
             String fileName = pathToPdf.substring(positionLastSlash, positionDotPdf);            
-            PDDocument document = null;            
+            PDDocument document = null;
             try 
             {
                 document = PDDocument.load(pathToPdf);
@@ -257,6 +250,7 @@ public class HtmlFile extends PDFTextStripper
      *
      * @param text The text to be processed
      */
+    @Override
     protected void processTextPosition( TextPosition text )
     {
     	try 

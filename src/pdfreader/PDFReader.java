@@ -23,20 +23,19 @@ package pdfreader;
  * limitations under the License.
  */
 
-
-import Examples.pdmodel.CreateBookmarks;
-import PDF.exceptions.COSVisitorException;
-import PDF.exceptions.CryptographyException;
-import PDF.exceptions.InvalidPasswordException;
+import org.apache.pdfbox.examples.pdmodel.CreateBookmarks;
+import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.apache.pdfbox.exceptions.CryptographyException;
+import org.apache.pdfbox.exceptions.InvalidPasswordException;
 import PDF.pdfviewer.PDFPagePanel;
 import PDF.pdfviewer.PageWrapper;
 import PDF.pdfviewer.ReaderBottomPanel;
-import PDF.pdmodel.PDDocument;
-import PDF.pdmodel.PDPage;
-import PDF.util.ExtensionFileFilter;
-import PDF.util.ImageIOUtil;
-import PDF.util.PDFTextStripperByArea;
-import PDF.util.TextPosition;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.util.ExtensionFileFilter;
+import org.apache.pdfbox.util.ImageIOUtil;
+import org.apache.pdfbox.util.PDFTextStripperByArea;
+import org.apache.pdfbox.util.TextPosition;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.print.PrinterException;
@@ -45,6 +44,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 
 /**
@@ -56,7 +56,7 @@ import javax.swing.*;
  */
 public class PDFReader extends JFrame
 {
-    private File currentDir=new File("G:/From Fuad sir DOCX to PDF");
+    private File currentDir=new File("F:\\rajmeen\\All files together\\PDF to HTML");
     private javax.swing.JMenuItem saveAsImageMenuItem;//Convert a PDF Page into an image
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
@@ -438,7 +438,7 @@ public class PDFReader extends JFrame
     }
     
     public void convertToStandardHtml(){
-        JFileChooser jfc = new JFileChooser("G:/From Fuad sir DOCX to PDF");
+        JFileChooser jfc = new JFileChooser("F:\\rajmeen\\All files together\\PDF to HTML");
         jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jfc.setSelectedFile(newFile(nameOfFile.substring(0, nameOfFile.length()-4)+".html"));
         jfc.showSaveDialog(PDFReader.this);
@@ -454,6 +454,10 @@ public class PDFReader extends JFrame
         try 
         {
 //                    HtmFile htmlFile = new HtmFile(outputFileName, type, zoom);
+//            StandardHtml shtml = new StandardHtml(outputFileName, 3, 2);
+//            shtml.convertPdfToHtml(name);
+//            shtml.closeFile();
+            
             HtmlFile htmlFile;
             htmlFile = new HtmlFile(outputFileName, 3, 2);
             htmlFile.convertPdfToHtml(name);
@@ -482,28 +486,53 @@ public class PDFReader extends JFrame
     
     public void regionTextAllOnce(java.awt.event.ActionEvent evt) throws IOException, CryptographyException{ 
         
-        JFileChooser jfc = new JFileChooser("G:/From Fuad sir DOCX to PDF");
+        JFileChooser jfc = new JFileChooser("F:\\rajmeen\\All files together\\PDF to HTML");
         jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         jfc.setSelectedFile(newFile(nameOfFile.substring(0, nameOfFile.length()-4)+".html"));
         jfc.showSaveDialog(PDFReader.this);
-        File saveFile = jfc.getSelectedFile();                
+        File saveFile = jfc.getSelectedFile();           
+        File saveFile1 = jfc.getSelectedFile();
         String outputFileName =  saveFile.toString();
-        HtmlFileGen htmlFileGen = new HtmlFileGen(name);
-        TaggedRegion tr;
+        String outputFileName1;
+        outputFileName1 = saveFile1.toString().substring(0,(saveFile1.toString().length()-5))+".xml";
+        HtmlFileGen htmlFileGen = new HtmlFileGen(name,"C:\\blazeds\\tomcat\\webapps\\pictures\\","localhost:8080/pictures/",getTheFileName(name),"");
+        TaggedRegion tr;        
+        BufferedWriter xmlFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFileName1),"UTF8"));        
+        xmlFile.write("<?xml version=\"1.0\"?><Pages>");
+        int tempPageNumber = -1;
         try (BufferedWriter htmlFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFileName),"UTF8"))) {
             for(int i = 0; i<listOfSelectedRegionInRectangle.size();i++)
             {
                 tr = listOfSelectedRegionInRectangle.get(i);
-                String s = htmlFileGen.getHtmlContent(tr.pageNumber, tr.rectangle, tr.tag).toString();
+                if(tempPageNumber==-1)
+                    xmlFile.write("<Page No = \""+tr.pageNumber+"\">");
+                else if(tempPageNumber!=tr.pageNumber)
+                    xmlFile.write("</Page><Page No = \""+tr.pageNumber+"\">");
+//                else
+//                    xmlFile.write("<Page No = \""+tr.pageNumber+"\">");
+                tempPageNumber = tr.pageNumber;
+                String s = htmlFileGen.getHtmlContent(tr.pageNumber, tr.rectangle, tr.tag);
                 htmlFile.write(s);
+                xmlFile.write("<Region x = \""+tr.rectangle.x+"\" y = \""+tr.rectangle.y+"\" height = \""+tr.rectangle.height+"\" width = \""+tr.rectangle.width+"\" type = \""+tr.tag+"\">");
+                xmlFile.write("<HtmlContent>"+ StringEscapeUtils.escapeXml(s)+"</HtmlContent></Region>");
     //            System.out.println(s);
             }
-        }
+        }       
+        xmlFile.write("</Page></Pages>");
+        xmlFile.close();
         listOfSelectedRegionInRectangle = new ArrayList<>();
     } 
     
+    
+    private String getTheFileName(String pdfPath)
+    {
+        int idx = pdfPath.replaceAll("\\\\", "/").lastIndexOf("/");
+        String pdfFileName = idx >= 0 ? pdfPath.substring(idx + 1) : pdfPath;
+        return pdfFileName;
+    }
+    
     private void listExtract(java.awt.event.ActionEvent evt){
-        JFileChooser jfc = new JFileChooser("G:/From Fuad sir DOCX to PDF");
+        JFileChooser jfc = new JFileChooser("F:\\rajmeen\\All files together\\PDF to HTML");
         jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         jfc.setSelectedFile(newFile(nameOfFile.substring(0, nameOfFile.length()-4)+".html"));
         jfc.showSaveDialog(PDFReader.this);
@@ -636,9 +665,7 @@ public class PDFReader extends JFrame
         ExtractTextByArea ETB = new ExtractTextByArea();
         try {
             regioon = ETB.extractTextByArea(name,rectangle,currentPage,0);
-        } catch (IOException ex) {
-            Logger.getLogger(PageWrapper.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CryptographyException ex) {
+        } catch (IOException | CryptographyException ex) {
             Logger.getLogger(PageWrapper.class.getName()).log(Level.SEVERE, null, ex);
         }
         int positionOfRowStart[] = ETB.getPointOfRowStart();
@@ -718,7 +745,8 @@ public class PDFReader extends JFrame
     }
     
     private void ExtImages(java.awt.event.ActionEvent evt){
-//        GetImages extractor = new GetImages();       
+        
+//        ExtractImages extractor = new ExtractImages();
 //        try 
 //        {
 //                extractor.extractImages( name );
@@ -729,7 +757,7 @@ public class PDFReader extends JFrame
     }
         
     private void createbookmarks(java.awt.event.ActionEvent evt) throws IOException, COSVisitorException{
-        CreateBookmarks bookmarks = new CreateBookmarks(name);
+        CreateBookmarks bookmarks = new CreateBookmarks();
     }
         
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt){
@@ -888,9 +916,9 @@ public class PDFReader extends JFrame
                 {
                     System.err.println( "Error: The document is encrypted." );
                 }
-                catch( PDF.exceptions.CryptographyException e )
+                catch(Exception e)
                 {
-                    e.printStackTrace();
+                    
                 }
             }
         }

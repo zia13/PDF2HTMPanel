@@ -20,7 +20,7 @@
 
 package PDF.pdfviewer;
 
-import PDF.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPage;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -29,6 +29,7 @@ import java.io.IOException;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import org.apache.pdfbox.pdfviewer.PageDrawer;
 import pdfreader.PDFReader;
 
 public class PageWrapper implements MouseListener
