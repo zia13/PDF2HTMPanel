@@ -15,7 +15,7 @@
             <line>752</line>
         </file>
     </editor-bookmarks>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="5">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="7">
         <file>
             <url>src/pdfreader/EDGARHTMLCharacterRun.java</url>
             <bookmark id="1">
@@ -62,6 +62,14 @@
             <bookmark id="0">
                 <name/>
                 <line>752</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/pdfreader/PDFReader.java</url>
+            <bookmark id="7">
+                <name/>
+                <line>501</line>
                 <key/>
             </bookmark>
         </file>

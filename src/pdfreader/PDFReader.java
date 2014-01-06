@@ -30,6 +30,10 @@ import org.apache.pdfbox.exceptions.InvalidPasswordException;
 import PDF.pdfviewer.PDFPagePanel;
 import PDF.pdfviewer.PageWrapper;
 import PDF.pdfviewer.ReaderBottomPanel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.util.ExtensionFileFilter;
@@ -37,6 +41,7 @@ import org.apache.pdfbox.util.ImageIOUtil;
 import org.apache.pdfbox.util.PDFTextStripperByArea;
 import org.apache.pdfbox.util.TextPosition;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.print.PrinterException;
 import java.io.*;
@@ -102,6 +107,7 @@ public class PDFReader extends JFrame
     String lastTag;
     TaggedRegion tR;
     JScrollPane documentScroller;
+    Rectangle[][] twoDRect;
     
     public PDFReader(){
         initComponents();
@@ -512,6 +518,10 @@ public class PDFReader extends JFrame
 //                    xmlFile.write("<Page No = \""+tr.pageNumber+"\">");
                 tempPageNumber = tr.pageNumber;
                 String s = htmlFileGen.getHtmlContent(tr.pageNumber, tr.rectangle, tr.tag);
+                if("table".equals(tr.tag)|| "list".equals(tr.tag))
+                {
+                    twoDRect = htmlFileGen.twoDRect;
+                }
                 htmlFile.write(s);
                 xmlFile.write("<Region x = \""+tr.rectangle.x+"\" y = \""+tr.rectangle.y+"\" height = \""+tr.rectangle.height+"\" width = \""+tr.rectangle.width+"\" type = \""+tr.tag+"\">");
                 xmlFile.write("<HtmlContent>"+ StringEscapeUtils.escapeXml(s)+"</HtmlContent></Region>");
@@ -523,9 +533,7 @@ public class PDFReader extends JFrame
         listOfSelectedRegionInRectangle = new ArrayList<>();
     } 
     
-    
-    private String getTheFileName(String pdfPath)
-    {
+    private String getTheFileName(String pdfPath){
         int idx = pdfPath.replaceAll("\\\\", "/").lastIndexOf("/");
         String pdfFileName = idx >= 0 ? pdfPath.substring(idx + 1) : pdfPath;
         return pdfFileName;
@@ -953,5 +961,31 @@ public class PDFReader extends JFrame
         pageAndSelectedRectangle.put(currentPage, rect);
         pageAndRectangleSelectedInIt.put(currentPage, rect);
     }   
+    
+}
+
+class Squares extends JPanel {
+   private static final int PREF_W = 500;
+   private static final int PREF_H = PREF_W;
+   private List<Rectangle> squares = new ArrayList<>();
+
+   public void addSquare(int x, int y, int width, int height) {
+      Rectangle rect = new Rectangle(x, y, width, height);
+      squares.add(rect);
+   }
+
+   @Override
+   public Dimension getPreferredSize() {
+      return new Dimension(PREF_W, PREF_H);
+   }
+
+   @Override
+   protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      Graphics2D g2 = (Graphics2D) g;
+      for (Rectangle rect : squares) {
+         g2.draw(rect);
+      }
+   }
 
 }
